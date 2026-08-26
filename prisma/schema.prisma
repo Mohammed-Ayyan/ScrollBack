@@ -1,0 +1,23 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model SavedReport {
+  id              String   @id @default(uuid())
+  createdAt       DateTime @default(now())
+  dailyHours      Int
+  dailyMinutes    Int
+  startYear       Int
+  age             Int?
+  country         String?
+  goals           String   // JSON string of selected goals array
+  totalDaysLost   Float
+  estimatedReels  Int
+  thumbDistanceKm Float
+  shareCode       String   @unique @default(nanoid(8))
+}
