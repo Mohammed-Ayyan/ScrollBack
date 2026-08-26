@@ -59,3 +59,23 @@ export interface RealityMilestone {
   achievement: string;
   goalId: GoalCategory;
 }
+
+export interface TimeGoalOption {
+  id: string;
+  label: string;
+  category: string;
+  iconName: 'laptop' | 'dumbbell' | 'rocket' | 'palette' | 'heart' | 'book' | 'globe' | 'sparkles';
+  color: string;
+  description: string;
+}
+
+export interface TimeCapsuleData {
+  id: string;
+  selectedGoalId: string;
+  selectedGoalLabel: string;
+  customGoal?: string;
+  promiseText: string;
+  pastDaysLost: number;
+  dailyReclaimedMinutes: number;
+  createdAt: string;
+}

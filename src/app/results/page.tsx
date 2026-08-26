@@ -20,6 +20,7 @@ import { SectionTimeline } from '@/components/results/SectionTimeline';
 import { SectionAlternate } from '@/components/results/SectionAlternate';
 import { SectionFuture } from '@/components/results/SectionFuture';
 import { AttentionPassport } from '@/components/experience/AttentionPassport';
+import { TimeCapsuleExperience } from '@/components/capsule/TimeCapsuleExperience';
 import { ShareModal } from '@/components/share/ShareModal';
 import { Share2, RotateCcw } from 'lucide-react';
 import confetti from 'canvas-confetti';
@@ -185,6 +186,9 @@ export default function ResultsPage() {
         estimatedReels={stats.estimatedReels}
         dailyHours={inputState.dailyHours}
       />
+
+      {/* 16. Emotional Conclusion: Time Capsule Experience */}
+      <TimeCapsuleExperience pastDaysLost={stats.full24hDaysLost} />
 
       {/* Share Modal */}
       <ShareModal

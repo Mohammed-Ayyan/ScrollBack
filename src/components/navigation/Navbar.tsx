@@ -58,6 +58,7 @@ export const Navbar: React.FC = () => {
     { label: 'Your Time', href: '/results#your-time' },
     { label: 'Timeline', href: '/results#timeline' },
     { label: 'Future', href: '/results#future' },
+    { label: 'Capsule ⏳', href: '/results#capsule' },
     { label: 'Calculate', href: '/calculator' },
   ];
 
