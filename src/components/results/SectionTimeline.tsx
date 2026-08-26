@@ -4,7 +4,7 @@ import React from 'react';
 import { motion, useInView } from 'framer-motion';
 import { getEventsForRange } from '@/lib/historicalEvents';
 import { HistoricalEvent } from '@/types';
-import { History } from 'lucide-react';
+import { History, Globe, Sparkles } from 'lucide-react';
 
 interface SectionTimelineProps {
   startYear: number;
@@ -12,11 +12,11 @@ interface SectionTimelineProps {
 
 const TimelineItem: React.FC<{ event: HistoricalEvent; index: number }> = ({ event, index }) => {
   const ref = React.useRef(null);
-  const isInView = useInView(ref, { margin: '-100px 0px -100px 0px' });
+  const isInView = useInView(ref, { margin: '-80px 0px -80px 0px' });
 
   return (
-    <div ref={ref} className="relative group">
-      {/* Active Year Marker Node */}
+    <div ref={ref} className="relative group select-none">
+      {/* Active Year Node */}
       <motion.div
         animate={{
           scale: isInView ? 1.25 : 1,
@@ -29,10 +29,10 @@ const TimelineItem: React.FC<{ event: HistoricalEvent; index: number }> = ({ eve
         <span>{event.icon}</span>
       </motion.div>
 
-      {/* Event Card Content Reveal */}
+      {/* Event Card */}
       <motion.div
         animate={{
-          opacity: isInView ? 1 : 0.45,
+          opacity: isInView ? 1 : 0.4,
           x: isInView ? 0 : -10,
         }}
         transition={{ duration: 0.4 }}
@@ -42,7 +42,7 @@ const TimelineItem: React.FC<{ event: HistoricalEvent; index: number }> = ({ eve
             : 'bg-surface-50 border-editorial-border'
         }`}
       >
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <span
             className={`px-3 py-1 font-mono font-black text-sm transition-colors ${
               isInView ? 'bg-accent-coral text-background' : 'bg-surface-200 text-editorial-muted'
@@ -57,6 +57,10 @@ const TimelineItem: React.FC<{ event: HistoricalEvent; index: number }> = ({ eve
         <p className="text-sm text-editorial-muted leading-relaxed font-normal">
           {event.description}
         </p>
+        <div className="pt-2 text-[11px] font-mono text-accent-coral flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5" />
+          <span>Humanity moved forward while feeds scrolled in parallel.</span>
+        </div>
       </motion.div>
     </div>
   );
@@ -67,23 +71,23 @@ export const SectionTimeline: React.FC<SectionTimelineProps> = ({ startYear }) =
   const events = getEventsForRange(startYear, currentYear);
 
   return (
-    <section id="timeline" className="py-20 border-b border-editorial-border bg-background">
+    <section id="timeline" className="py-20 border-b border-editorial-border bg-background relative overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
         <div className="text-center space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-coral flex items-center justify-center gap-1.5">
-            <History className="w-4 h-4" /> Section 04 // Historical Progression
+            <Globe className="w-4 h-4" /> Section 05 // World Movement Timeline
           </span>
           <h2 className="text-3xl sm:text-6xl font-extrabold text-white tracking-tight">
-            While you were scrolling...
+            The World Kept Moving Forward
           </h2>
           <p className="text-sm sm:text-base text-editorial-muted max-w-2xl mx-auto leading-relaxed">
-            Major global events, technological breakthroughs, and scientific leaps that transpired from {startYear} to {currentYear} as your hours accumulated in the background.
+            As your personal scrolling hours accumulated from {startYear} to {currentYear}, history was being written around the globe.
           </p>
         </div>
 
-        {/* Timeline Stream with Viewport Highlighting */}
+        {/* Timeline Stream */}
         <div className="relative border-l-2 border-editorial-border ml-4 sm:ml-12 pl-6 sm:pl-12 space-y-12">
           {events.map((event, idx) => (
             <TimelineItem key={idx} event={event} index={idx} />

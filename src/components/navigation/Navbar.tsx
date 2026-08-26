@@ -4,12 +4,13 @@ import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useMotionValue, useSpring, useReducedMotion } from 'framer-motion';
-import { ArrowRight, Menu, X } from 'lucide-react';
+import { ArrowRight, Menu, X, Clock, Compass } from 'lucide-react';
 import { clsx } from 'clsx';
 
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [currentTime, setCurrentTime] = useState<string>('');
   const pathname = usePathname();
   const shouldReduceMotion = useReducedMotion();
 
@@ -35,18 +36,29 @@ export const Navbar: React.FC = () => {
   };
 
   useEffect(() => {
+    const updateClock = () => {
+      const now = new Date();
+      setCurrentTime(now.toLocaleTimeString('en-US', { hour12: false }));
+    };
+    updateClock();
+    const timer = setInterval(updateClock, 1000);
+
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      clearInterval(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const navLinks = [
-    { label: 'Your Time', href: '/#your-time' },
-    { label: 'Timeline', href: '/#timeline' },
-    { label: 'How It Works', href: '/#how-it-works' },
+    { label: 'Your Time', href: '/results#your-time' },
+    { label: 'Timeline', href: '/results#timeline' },
+    { label: 'Future', href: '/results#future' },
+    { label: 'Calculate', href: '/calculator' },
   ];
 
   return (
@@ -64,11 +76,12 @@ export const Navbar: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           
-          {/* Logo & Wordmark — Reveal Animation */}
+          {/* Logo & Wordmark */}
           <motion.div
             initial={{ x: -15, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            className="flex items-center gap-4"
           >
             <Link href="/" className="flex items-center gap-3 group">
               <div className="w-2.5 h-2.5 bg-accent-coral transition-transform group-hover:scale-125" />
@@ -77,10 +90,18 @@ export const Navbar: React.FC = () => {
                   SCROLLBACK
                 </span>
                 <span className="text-[10px] font-mono font-bold text-accent-coral tracking-widest uppercase">
-                  // REPORT
+                  // TIME
                 </span>
               </div>
             </Link>
+
+            {/* Live Ticking Time Widget */}
+            {currentTime && (
+              <div className="hidden lg:flex items-center gap-1.5 px-2.5 py-1 bg-surface-100 border border-editorial-border text-[11px] font-mono text-editorial-dim">
+                <Clock className="w-3 h-3 text-accent-coral animate-spin" style={{ animationDuration: '6s' }} />
+                <span>{currentTime}</span>
+              </div>
+            )}
           </motion.div>
 
           {/* Sequential Nav Items Reveal */}
@@ -102,7 +123,7 @@ export const Navbar: React.FC = () => {
                       {link.label}
                     </span>
 
-                    {/* Animated Left-to-Right Underline Reveal */}
+                    {/* Animated Underline */}
                     <span
                       className={clsx(
                         'absolute bottom-0 left-0 h-0.5 bg-accent-coral transition-all duration-300 ease-out',
@@ -130,7 +151,8 @@ export const Navbar: React.FC = () => {
                 href="/calculator"
                 className="inline-flex items-center gap-2 px-5 py-2.5 bg-accent-coral text-background font-mono font-bold text-xs uppercase tracking-wider hover:bg-white transition-colors shadow-[0_0_20px_rgba(255,77,77,0.3)] relative overflow-hidden group"
               >
-                <span className="relative z-10">Calculate</span>
+                <Compass className="w-3.5 h-3.5 relative z-10" />
+                <span className="relative z-10">Audit Your Time</span>
                 <ArrowRight className="w-3.5 h-3.5 relative z-10 transition-transform group-hover:translate-x-1" />
               </Link>
             </motion.div>
@@ -147,7 +169,7 @@ export const Navbar: React.FC = () => {
         </div>
       </motion.header>
 
-      {/* Full-Screen Polished Mobile Navigation Overlay */}
+      {/* Mobile Navigation Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -175,8 +197,8 @@ export const Navbar: React.FC = () => {
 
             {/* Main Display Navigation Links */}
             <div className="space-y-6 my-auto text-left">
-              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent-coral">
-                NAVIGATION
+              <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent-coral flex items-center gap-2">
+                <Clock className="w-3.5 h-3.5" /> TIME JOURNEY NAVIGATION
               </span>
               <div className="space-y-4">
                 {navLinks.map((link, idx) => (
@@ -205,13 +227,13 @@ export const Navbar: React.FC = () => {
                 onClick={() => setMobileMenuOpen(false)}
                 className="w-full inline-flex items-center justify-center gap-3 py-4 bg-accent-coral text-background font-mono font-bold text-xs uppercase tracking-wider shadow-[0_0_25px_rgba(255,77,77,0.4)]"
               >
-                <span>Calculate My Scroll</span>
+                <span>Audit Your Time</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
 
               <div className="flex items-center justify-between text-[10px] font-mono text-editorial-dim">
-                <span>© {new Date().getFullYear()} ScrollBack Report</span>
-                <span>Attention Clarity Engine</span>
+                <span>© {new Date().getFullYear()} ScrollBack</span>
+                <span>Time Audit Engine</span>
               </div>
             </div>
           </motion.div>

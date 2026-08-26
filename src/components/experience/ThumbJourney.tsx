@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Counter } from '@/components/ui/Counter';
-import { Navigation, Smartphone } from 'lucide-react';
+import { Navigation, Globe, Compass, Mountain } from 'lucide-react';
 
 interface ThumbJourneyProps {
   thumbDistanceKm: number;
@@ -18,52 +18,62 @@ export const ThumbJourney: React.FC<ThumbJourneyProps> = ({
   const everestEquivalent = (thumbDistanceKm / 8.848).toFixed(1);
 
   return (
-    <div className="py-16 border-b border-editorial-border bg-background relative overflow-hidden">
+    <div className="py-20 border-b border-editorial-border bg-background relative overflow-hidden select-none">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12 text-center">
         
         <div className="space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-cyan flex items-center justify-center gap-1.5">
-            <Navigation className="w-4 h-4" /> Visual Experience // Physical Mechanics
+            <Compass className="w-4 h-4" /> Section 04 // Spatial Distance of Time
           </span>
           <h3 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Your Thumb Traveled Approximately
+            If Your Scroll Was a Physical Journey...
           </h3>
-          <p className="text-5xl sm:text-7xl font-black font-mono tracking-tight text-accent-cyan">
-            <Counter value={thumbDistanceKm} decimals={1} /> KM
-          </p>
           <p className="text-sm text-editorial-muted max-w-xl mx-auto">
-            That&apos;s <span className="text-white font-mono font-bold">{totalSwipes.toLocaleString()} physical vertical swipes</span> across your smartphone screen.
+            Time has spatial size. Every swipe moved your thumb a few inches across glass.
           </p>
         </div>
 
-        {/* Animated Phone Screen with Swiping Thumb Mock */}
-        <div className="max-w-xs mx-auto p-6 border-2 border-editorial-border bg-surface-50 rounded-2xl shadow-2xl relative space-y-6">
-          <div className="w-16 h-2 bg-surface-200 rounded-full mx-auto" />
+        {/* Big Distance Display */}
+        <div className="p-8 border border-editorial-border bg-surface-50 max-w-2xl mx-auto space-y-4">
+          <p className="text-xs font-mono uppercase text-editorial-dim">Total Swiping Physical Distance</p>
+          <p className="text-6xl sm:text-8xl font-black font-mono tracking-tight text-accent-cyan">
+            <Counter value={thumbDistanceKm} decimals={1} /> <span className="text-3xl font-sans text-white">KM</span>
+          </p>
+          <p className="text-sm text-editorial-muted font-mono">
+            Equal to <strong className="text-white">{totalSwipes.toLocaleString()} physical vertical swipes</strong> on screen.
+          </p>
+        </div>
+
+        {/* Spatial Journey Milestone Path Card Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto text-left">
           
-          <div className="h-64 border border-editorial-border bg-background rounded-lg relative overflow-hidden flex flex-col items-center justify-center">
-            {/* Animated Swiping Finger Cue */}
-            <motion.div
-              animate={{
-                y: [40, -40],
-                opacity: [0, 1, 0],
-              }}
-              transition={{
-                duration: 1.2,
-                repeat: Infinity,
-                ease: 'easeInOut',
-              }}
-              className="flex flex-col items-center text-accent-cyan font-mono text-xs font-bold"
-            >
-              <div className="w-8 h-12 border-2 border-accent-cyan rounded-full bg-accent-cyan/20 flex items-center justify-center">
-                👆
-              </div>
-              <span className="mt-2 text-[10px]">SWIPING UP</span>
-            </motion.div>
+          <div className="p-6 border border-editorial-border bg-surface-50 space-y-2">
+            <div className="flex items-center justify-between text-accent-cyan">
+              <Mountain className="w-5 h-5" />
+              <span className="text-xs font-mono font-bold">VERT. CLIMB</span>
+            </div>
+            <p className="text-2xl font-bold font-mono text-white">{everestEquivalent}x</p>
+            <p className="text-xs text-editorial-muted font-mono">Mount Everest Climbs (8.8 km each)</p>
           </div>
 
-          <div className="p-3 border border-editorial-border bg-background text-xs font-mono text-editorial-muted">
-            Height equivalent: <span className="text-accent-cyan font-bold">{everestEquivalent}x Mount Everests</span>
+          <div className="p-6 border border-editorial-border bg-surface-50 space-y-2">
+            <div className="flex items-center justify-between text-accent-amber">
+              <Globe className="w-5 h-5" />
+              <span className="text-xs font-mono font-bold">CROSSING</span>
+            </div>
+            <p className="text-2xl font-bold font-mono text-white">{(thumbDistanceKm / 40075 * 100).toFixed(1)}%</p>
+            <p className="text-xs text-editorial-muted font-mono">Circumference of Planet Earth</p>
           </div>
+
+          <div className="p-6 border border-editorial-border bg-surface-50 space-y-2">
+            <div className="flex items-center justify-between text-accent-coral">
+              <Navigation className="w-5 h-5" />
+              <span className="text-xs font-mono font-bold">MARATHONS</span>
+            </div>
+            <p className="text-2xl font-bold font-mono text-white">{Math.round(thumbDistanceKm / 42.195)}</p>
+            <p className="text-xs text-editorial-muted font-mono">Full Marathons Run (42.2 km each)</p>
+          </div>
+
         </div>
 
       </div>

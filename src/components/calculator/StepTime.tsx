@@ -1,7 +1,8 @@
 'use client';
 
 import React from 'react';
-import { Clock, Plus, Minus } from 'lucide-react';
+import { Clock, Flame } from 'lucide-react';
+import { Clock24hDial } from './Clock24hDial';
 
 interface StepTimeProps {
   hours: number;
@@ -27,29 +28,36 @@ export const StepTime: React.FC<StepTimeProps> = ({
   return (
     <div className="space-y-8 text-left">
       <div className="space-y-2">
-        <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-coral">
-          STEP 01 / SCREEN TIME
+        <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-coral flex items-center gap-1.5">
+          <Clock className="w-4 h-4" /> STEP 01 // TIME MACHINE INPUT
         </span>
         <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-          How much do you scroll?
+          How much of your day disappears here?
         </h2>
         <p className="text-sm text-editorial-muted">
-          Select your estimated average daily screen time watching Reels & short videos.
+          Drag the sliders or tap presets to see how scrolling carves away your actual 24-hour day.
         </p>
       </div>
 
-      {/* Massive Visually Dominant Display */}
-      <div className="p-8 sm:p-12 border border-editorial-border bg-surface-50 text-center space-y-4">
+      {/* Massive Visually Dominant Time Readout */}
+      <div className="p-8 border border-editorial-border bg-surface-50 text-center space-y-3 relative overflow-hidden">
+        <div className="absolute top-0 right-0 p-3 text-[10px] font-mono text-accent-coral uppercase font-bold bg-accent-coral/10 border-b border-l border-accent-coral/30">
+          Daily Loss Rate
+        </div>
         <p className="text-6xl sm:text-8xl font-black font-mono text-white tracking-tight">
           <span className="text-accent-coral">{hours}</span>
           <span className="text-2xl sm:text-4xl text-editorial-dim font-bold font-sans">h </span>
           <span className="text-white">{minutes}</span>
           <span className="text-2xl sm:text-4xl text-editorial-dim font-bold font-sans">m</span>
         </p>
-        <p className="text-xs font-mono uppercase tracking-wider text-editorial-muted">
-          daily short video screen time
+        <p className="text-xs font-mono uppercase tracking-wider text-editorial-muted flex items-center justify-center gap-1.5">
+          <Flame className="w-3.5 h-3.5 text-accent-coral" />
+          Average Daily Short Video Consumption
         </p>
       </div>
+
+      {/* Interactive 24-Hour Circular Day Partition Clock */}
+      <Clock24hDial hours={hours} minutes={minutes} />
 
       {/* Preset Buttons */}
       <div className="space-y-3">

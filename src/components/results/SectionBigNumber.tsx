@@ -4,8 +4,7 @@ import React from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Counter } from '@/components/ui/Counter';
 import { formatTimeSpan } from '@/lib/calculations';
-import { Clock, Calendar } from 'lucide-react';
-import { TextReveal } from '@/components/ui/TextReveal';
+import { Clock, Calendar, AlertCircle } from 'lucide-react';
 
 interface SectionBigNumberProps {
   totalHoursLost: number;
@@ -23,65 +22,73 @@ export const SectionBigNumber: React.FC<SectionBigNumberProps> = ({
   const yearsDecimal = (totalHoursLost / (365.25 * 24)).toFixed(1);
   const shouldReduceMotion = useReducedMotion();
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.15,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { y: shouldReduceMotion ? 0 : 25, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.6,
-        ease: [0.16, 1, 0.3, 1],
-      },
-    },
-  };
-
   return (
-    <section className="py-16 sm:py-24 border-b border-editorial-border bg-surface-50 overflow-hidden">
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="max-w-5xl mx-auto px-4 text-center space-y-8"
-      >
+    <section id="your-time" className="py-20 sm:py-32 border-b border-editorial-border bg-gradient-to-b from-background via-surface-50 to-background overflow-hidden relative select-none">
+      
+      {/* Background Time Pulse */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-accent-coral/10 rounded-full blur-3xl pointer-events-none animate-time-pulse" />
+
+      <div className="max-w-5xl mx-auto px-4 text-center space-y-10 relative z-10">
         
-        {/* Step 1: Tag */}
-        <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-3 py-1 bg-surface-200 border border-editorial-border text-xs font-mono text-accent-coral uppercase tracking-wider">
+        {/* Section Tag */}
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="inline-flex items-center gap-2 px-3 py-1 bg-surface-200 border border-editorial-border text-xs font-mono text-accent-coral uppercase tracking-wider"
+        >
           <Clock className="w-3.5 h-3.5" />
-          <span>Section 01 // Cumulative Lifetime Loss</span>
+          <span>Section 01 // The Time Reveal</span>
         </motion.div>
 
-        {/* Step 2: Cinematic Text Sequence */}
-        <div className="space-y-4">
-          <motion.p variants={itemVariants} className="text-xl sm:text-3xl font-extrabold uppercase tracking-tight text-editorial-muted">
-            You&apos;ve spent
+        {/* Dramatic Cinematic Sequence */}
+        <div className="space-y-6">
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-2xl sm:text-4xl font-extrabold uppercase tracking-widest text-editorial-muted font-mono"
+          >
+            You gave
           </motion.p>
 
-          <motion.h2 variants={itemVariants} className="text-6xl sm:text-8xl lg:text-9xl font-black font-mono tracking-tighter text-white leading-none">
-            <Counter value={totalDaysFormatted} duration={2200} /> <span className="text-accent-coral">DAYS</span>
-          </motion.h2>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.5 }}
+            className="py-4"
+          >
+            <h2 className="text-7xl sm:text-9xl lg:text-[11rem] font-black font-mono tracking-tighter text-white leading-none drop-shadow-[0_0_35px_rgba(255,77,77,0.3)]">
+              <Counter value={totalDaysFormatted} duration={2500} /> <span className="text-accent-coral">DAYS</span>
+            </h2>
+          </motion.div>
 
-          <motion.p variants={itemVariants} className="text-2xl sm:text-4xl font-extrabold tracking-tight text-editorial-cream pt-2">
-            scrolling.
+          <motion.p
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.0 }}
+            className="text-3xl sm:text-5xl font-extrabold tracking-tight text-white uppercase font-mono"
+          >
+            to scrolling.
           </motion.p>
 
-          <motion.p variants={itemVariants} className="text-base sm:text-xl text-editorial-muted max-w-xl mx-auto pt-2">
-            That&apos;s approximately <span className="text-accent-coral font-bold font-mono">{yearsDecimal} years</span> of your life.
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 1.4 }}
+            className="text-lg sm:text-2xl text-editorial-muted max-w-2xl mx-auto font-mono pt-4"
+          >
+            That&apos;s <strong className="text-accent-coral">{yearsDecimal} solid years</strong> of your existence surrendered in 15-second fragments.
           </motion.p>
         </div>
 
-        {/* Step 3: Waking Days & 24h Split Module */}
-        <motion.div variants={itemVariants} className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-8 border-t border-editorial-border text-left">
+        {/* Breakdown Modules */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1.7 }}
+          className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl mx-auto pt-8 border-t border-editorial-border text-left"
+        >
           <div className="p-6 border border-editorial-border bg-background space-y-1">
             <p className="text-xs font-mono text-editorial-dim uppercase flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-editorial-muted" />
@@ -103,7 +110,7 @@ export const SectionBigNumber: React.FC<SectionBigNumberProps> = ({
           </div>
         </motion.div>
 
-      </motion.div>
+      </div>
     </section>
   );
 };
