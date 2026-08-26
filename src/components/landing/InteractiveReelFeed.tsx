@@ -1,12 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Flame, Play, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Flame, Play, Clock, Sparkles } from 'lucide-react';
 import { Counter } from '@/components/ui/Counter';
 
+interface TimeScaleOption {
+  years: number;
+  label: string;
+  reels: number;
+  daysLost: number;
+  speedDuration: number;
+}
+
 export const InteractiveReelFeed: React.FC = () => {
-  const [isHovered, setIsHovered] = useState(false);
+  const [selectedYears, setSelectedYears] = useState<number>(3);
+
+  const scales: TimeScaleOption[] = [
+    { years: 1, label: '1 Year', reels: 243300, daysLost: 38, speedDuration: 12 },
+    { years: 3, label: '3 Years', reels: 729900, daysLost: 114, speedDuration: 7 },
+    { years: 5, label: '5 Years', reels: 1216500, daysLost: 190, speedDuration: 4 },
+    { years: 10, label: '10 Years', reels: 2433000, daysLost: 380, speedDuration: 2 },
+  ];
+
+  const activeScale = scales.find((s) => s.years === selectedYears) || scales[1];
 
   const reelCards = [
     { title: 'Dopamine Loop #1', category: 'Viral Dance', duration: '15s', color: 'from-zinc-900 to-zinc-950' },
@@ -17,38 +34,60 @@ export const InteractiveReelFeed: React.FC = () => {
   ];
 
   return (
-    <div
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className="relative w-full max-w-sm mx-auto h-[520px] bg-surface-50 border border-editorial-border rounded-sm overflow-hidden flex flex-col justify-between p-6 select-none cursor-pointer group"
-    >
-      {/* Top Header Counter Banner */}
-      <div className="z-20 flex items-center justify-between bg-background/90 backdrop-blur-md p-3.5 border border-editorial-border rounded-sm">
-        <div className="space-y-0.5 text-left">
-          <p className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent-coral flex items-center gap-1">
-            <Flame className="w-3 h-3 text-accent-coral animate-pulse" /> Live Scroll Stream
-          </p>
-          <p className="text-2xl font-black font-mono text-white tracking-tight">
-            <Counter value={isHovered ? 1284900 : 847320} duration={1500} />
-          </p>
-          <p className="text-[10px] text-editorial-muted uppercase tracking-wider font-semibold">
-            estimated reels
-          </p>
+    <div className="relative w-full max-w-sm mx-auto h-[540px] bg-surface-50 border border-editorial-border rounded-sm overflow-hidden flex flex-col justify-between p-6 select-none shadow-2xl">
+      
+      {/* Top Controls: Time Scale Switch Buttons */}
+      <div className="z-20 space-y-3 bg-background/95 backdrop-blur-md p-3.5 border border-editorial-border rounded-sm">
+        <div className="flex items-center justify-between">
+          <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-accent-coral flex items-center gap-1">
+            <Clock className="w-3 h-3 text-accent-coral" /> Click to Play with Time
+          </span>
+          <span className="text-[10px] font-mono text-accent-coral font-bold uppercase">
+            ~{activeScale.daysLost} Days Lost
+          </span>
         </div>
 
-        <div className="px-2.5 py-1 rounded bg-accent-coral/10 border border-accent-coral/30 text-[10px] font-mono text-accent-coral font-bold uppercase">
-          {isHovered ? '⚡ Accelerated' : 'Hover to Speed Up'}
+        <div className="grid grid-cols-4 gap-1">
+          {scales.map((s) => (
+            <button
+              key={s.years}
+              type="button"
+              onClick={() => setSelectedYears(s.years)}
+              className={`py-1 text-[10px] font-mono font-bold uppercase border transition-all cursor-pointer ${
+                selectedYears === s.years
+                  ? 'bg-accent-coral text-background border-accent-coral shadow-[0_0_10px_rgba(255,77,77,0.4)]'
+                  : 'bg-surface-100 border-editorial-border text-editorial-muted hover:text-white'
+              }`}
+            >
+              {s.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Dynamic Scale Readout */}
+        <div className="text-left pt-1 border-t border-editorial-border flex items-baseline justify-between">
+          <div>
+            <p className="text-xl font-black font-mono text-white tracking-tight">
+              <Counter value={activeScale.reels} duration={1200} />
+            </p>
+            <p className="text-[9px] text-editorial-muted uppercase tracking-wider font-semibold">
+              Reels watched in {activeScale.label}
+            </p>
+          </div>
+          <span className="text-[10px] font-mono text-accent-amber font-bold">
+            {activeScale.years * 365} Days Total
+          </span>
         </div>
       </div>
 
       {/* Scrolling Blurred Reel Stream */}
-      <div className="absolute inset-0 top-20 overflow-hidden opacity-60 group-hover:opacity-90 transition-opacity">
+      <div className="absolute inset-0 top-28 overflow-hidden opacity-60 hover:opacity-95 transition-opacity">
         <motion.div
           animate={{
             y: ['0%', '-50%'],
           }}
           transition={{
-            duration: isHovered ? 4 : 14,
+            duration: activeScale.speedDuration,
             repeat: Infinity,
             ease: 'linear',
           }}
@@ -69,7 +108,7 @@ export const InteractiveReelFeed: React.FC = () => {
               <div className="space-y-1 text-left">
                 <p className="text-xs font-bold text-white font-mono">{reel.title}</p>
                 <div className="w-full h-1 bg-surface-300 rounded-full overflow-hidden">
-                  <div className="h-full bg-accent-coral w-3/4" />
+                  <div className="h-full bg-accent-coral w-3/4 animate-pulse" />
                 </div>
               </div>
             </div>
@@ -77,9 +116,10 @@ export const InteractiveReelFeed: React.FC = () => {
         </motion.div>
       </div>
 
-      {/* Bottom Hint Banner */}
-      <div className="z-20 bg-background/90 backdrop-blur-md p-3 border border-editorial-border text-center text-xs font-mono text-editorial-muted">
-        {isHovered ? 'High Velocity Consumption Active' : 'Hover over screen to accelerate time'}
+      {/* Bottom Status Banner */}
+      <div className="z-20 bg-background/95 backdrop-blur-md p-2.5 border border-editorial-border text-center text-[10px] font-mono text-editorial-muted flex items-center justify-center gap-1">
+        <Sparkles className="w-3 h-3 text-accent-coral" />
+        <span>Click scale buttons above to manipulate the speed & volume of time</span>
       </div>
     </div>
   );

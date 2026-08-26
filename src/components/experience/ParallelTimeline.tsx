@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Layers, Sparkles, AlertCircle, GitBranch, ArrowRight } from 'lucide-react';
+import { Layers, Sparkles, AlertCircle, GitBranch, ArrowLeftRight } from 'lucide-react';
 
 interface ParallelTimelineProps {
   startYear: number;
@@ -15,7 +15,7 @@ export const ParallelTimeline: React.FC<ParallelTimelineProps> = ({
   totalDaysLost,
   totalHoursLost,
 }) => {
-  const [activeBranch, setActiveBranch] = useState<'all' | 'scrolling' | 'mastery'>('all');
+  const [splitPos, setSplitPos] = useState<number>(50); // percentage 0 to 100
 
   const comparisonMilestones = [
     {
@@ -42,102 +42,78 @@ export const ParallelTimeline: React.FC<ParallelTimelineProps> = ({
         {/* Header */}
         <div className="text-center space-y-3">
           <span className="text-xs font-mono font-bold uppercase tracking-wider text-accent-coral flex items-center justify-center gap-1.5">
-            <GitBranch className="w-4 h-4" /> Section 06 // The Branching Timeline Split
+            <GitBranch className="w-4 h-4" /> Section 06 // Drag the Parallel Split Handle
           </span>
           <h3 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
-            Where the Timeline Branch Split
+            Drag the Split Handle to Uncover Both Lives
           </h3>
           <p className="text-sm text-editorial-muted max-w-xl mx-auto">
-            At every moment, your time splits into two paths: the automated scroll loop or the alternate life built with those hours.
+            Drag the handle horizontally to explore Path A (The Scroll Loop) vs Path B (The Mastered Life).
           </p>
         </div>
 
-        {/* Branch Filter Selector */}
-        <div className="flex items-center justify-center gap-2 font-mono text-xs">
-          <button
-            onClick={() => setActiveBranch('all')}
-            className={`px-4 py-2 border font-bold uppercase cursor-pointer ${
-              activeBranch === 'all'
-                ? 'bg-accent-coral text-background border-accent-coral'
-                : 'bg-surface-100 border-editorial-border text-editorial-muted'
-            }`}
-          >
-            Show Both Timelines
-          </button>
-          <button
-            onClick={() => setActiveBranch('scrolling')}
-            className={`px-4 py-2 border font-bold uppercase cursor-pointer ${
-              activeBranch === 'scrolling'
-                ? 'bg-background border-editorial-border text-white'
-                : 'bg-surface-100 border-editorial-border text-editorial-muted'
-            }`}
-          >
-            Path A: Scroll Loop
-          </button>
-          <button
-            onClick={() => setActiveBranch('mastery')}
-            className={`px-4 py-2 border font-bold uppercase cursor-pointer ${
-              activeBranch === 'mastery'
-                ? 'bg-accent-emerald text-background border-accent-emerald font-bold'
-                : 'bg-surface-100 border-editorial-border text-editorial-muted'
-            }`}
-          >
-            Path B: Mastered Life
-          </button>
+        {/* Draggable Divider Handle Controls */}
+        <div className="space-y-2 max-w-xl mx-auto">
+          <div className="flex justify-between text-xs font-mono text-editorial-muted font-bold">
+            <span className="text-white">← Path A: Scroll Loop ({100 - splitPos}%)</span>
+            <span className="text-accent-coral">Path B: Mastered Life ({splitPos}%) →</span>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={splitPos}
+            onChange={(e) => setSplitPos(Number(e.target.value))}
+            className="w-full h-3 bg-surface-200 rounded-none appearance-none cursor-pointer accent-accent-coral shadow-[0_0_15px_rgba(255,77,77,0.4)]"
+          />
         </div>
 
         {/* Side-by-Side Dual Path Matrix */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
           
           {/* LEFT PATH: REALITY SCROLLING */}
-          {(activeBranch === 'all' || activeBranch === 'scrolling') && (
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="border border-editorial-border bg-background p-6 sm:p-8 space-y-6 text-left"
-            >
-              <div className="flex items-center justify-between border-b border-editorial-border pb-4">
-                <span className="text-xs font-mono font-bold text-editorial-muted uppercase flex items-center gap-1.5">
-                  <AlertCircle className="w-4 h-4 text-editorial-dim" /> PATH A // THE SCROLL LOOP
-                </span>
-                <span className="text-xs font-mono text-editorial-dim">{totalDaysLost.toFixed(0)} Days Consumed</span>
-              </div>
+          <motion.div
+            style={{ opacity: Math.max(0.2, (100 - splitPos) / 100) }}
+            className="border border-editorial-border bg-background p-6 sm:p-8 space-y-6 text-left"
+          >
+            <div className="flex items-center justify-between border-b border-editorial-border pb-4">
+              <span className="text-xs font-mono font-bold text-editorial-muted uppercase flex items-center gap-1.5">
+                <AlertCircle className="w-4 h-4 text-editorial-dim" /> PATH A // THE SCROLL LOOP
+              </span>
+              <span className="text-xs font-mono text-editorial-dim">{totalDaysLost.toFixed(0)} Days Consumed</span>
+            </div>
 
-              <div className="space-y-4">
-                {comparisonMilestones.map((item, idx) => (
-                  <div key={idx} className="p-4 border border-editorial-border bg-surface-50 space-y-1">
-                    <span className="text-[10px] font-mono text-editorial-dim uppercase">{item.period}</span>
-                    <p className="text-sm font-mono font-bold text-editorial-cream">{item.reality}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
+            <div className="space-y-4">
+              {comparisonMilestones.map((item, idx) => (
+                <div key={idx} className="p-4 border border-editorial-border bg-surface-50 space-y-1">
+                  <span className="text-[10px] font-mono text-editorial-dim uppercase">{item.period}</span>
+                  <p className="text-sm font-mono font-bold text-editorial-cream">{item.reality}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
 
           {/* RIGHT PATH: ALTERNATE MASTERY */}
-          {(activeBranch === 'all' || activeBranch === 'mastery') && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="border-2 border-accent-coral/60 bg-surface-100 p-6 sm:p-8 space-y-6 text-left"
-            >
-              <div className="flex items-center justify-between border-b border-editorial-border pb-4">
-                <span className="text-xs font-mono font-bold text-accent-coral uppercase flex items-center gap-1.5">
-                  <Sparkles className="w-4 h-4 text-accent-coral" /> PATH B // THE MASTERED LIFE
-                </span>
-                <span className="text-xs font-mono text-accent-coral font-bold">{totalHoursLost} Hours Invested</span>
-              </div>
+          <motion.div
+            style={{ opacity: Math.max(0.2, splitPos / 100) }}
+            className="border-2 border-accent-coral/60 bg-surface-100 p-6 sm:p-8 space-y-6 text-left shadow-[0_0_30px_rgba(255,77,77,0.2)]"
+          >
+            <div className="flex items-center justify-between border-b border-editorial-border pb-4">
+              <span className="text-xs font-mono font-bold text-accent-coral uppercase flex items-center gap-1.5">
+                <Sparkles className="w-4 h-4 text-accent-coral" /> PATH B // THE MASTERED LIFE
+              </span>
+              <span className="text-xs font-mono text-accent-coral font-bold">{totalHoursLost} Hours Invested</span>
+            </div>
 
-              <div className="space-y-4">
-                {comparisonMilestones.map((item, idx) => (
-                  <div key={idx} className="p-4 border border-accent-coral/40 bg-background space-y-1">
-                    <span className="text-[10px] font-mono text-accent-coral uppercase font-bold">{item.period}</span>
-                    <p className="text-sm font-mono font-bold text-white">{item.possibility}</p>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-          )}
+            <div className="space-y-4">
+              {comparisonMilestones.map((item, idx) => (
+                <div key={idx} className="p-4 border border-accent-coral/40 bg-background space-y-1">
+                  <span className="text-[10px] font-mono text-accent-coral uppercase font-bold">{item.period}</span>
+                  <p className="text-sm font-mono font-bold text-white">{item.possibility}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
 
         </div>
 
