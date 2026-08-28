@@ -4,7 +4,6 @@ import React from 'react';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Clock, ShieldCheck } from 'lucide-react';
-import { TextReveal } from '@/components/ui/TextReveal';
 
 export const Footer: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -49,13 +48,10 @@ export const Footer: React.FC = () => {
             <span>Final Chapter // Attention & Freedom</span>
           </motion.div>
 
-          {/* Word Stagger Mask Reveal */}
           <div className="py-2">
-            <TextReveal
-              text="Your time is still yours."
-              as="h2"
-              className="text-4xl sm:text-7xl font-extrabold text-white tracking-tight justify-center"
-            />
+            <h2 className="text-4xl sm:text-7xl font-extrabold text-white tracking-tight justify-center">
+              Your time is still yours.
+            </h2>
           </div>
 
           <motion.p variants={itemVariants} className="text-base sm:text-lg text-editorial-muted max-w-2xl mx-auto leading-relaxed font-normal">
@@ -74,7 +70,7 @@ export const Footer: React.FC = () => {
         </div>
       </motion.div>
 
-      {/* Middle Section — Restrained Navigation & Privacy Guarantee */}
+      {/* Middle Section — Navigation & Internal Links */}
       <motion.div
         initial="hidden"
         whileInView="visible"
@@ -84,7 +80,7 @@ export const Footer: React.FC = () => {
       >
         
         {/* Identity Block */}
-        <motion.div variants={itemVariants} className="md:col-span-5 space-y-3 text-left">
+        <motion.div variants={itemVariants} className="md:col-span-4 space-y-3 text-left">
           <div className="flex items-center gap-2.5">
             <div className="w-2.5 h-2.5 bg-accent-coral" />
             <span className="text-lg font-black font-mono tracking-tighter uppercase text-white">
@@ -92,39 +88,44 @@ export const Footer: React.FC = () => {
             </span>
           </div>
           <p className="text-xs text-editorial-muted leading-relaxed max-w-sm">
-            An editorial data storytelling report designed to illuminate the cumulative cost of short-form video scrolling.
+            An interactive data storytelling experience and calculator revealing the true cost of Instagram screen time.
           </p>
         </motion.div>
 
-        {/* Restrained Navigation */}
-        <motion.div variants={itemVariants} className="md:col-span-3 space-y-2 text-left">
-          <p className="text-xs font-mono font-bold uppercase text-white">Navigation</p>
+        {/* Navigation & Core Calculators */}
+        <motion.div variants={itemVariants} className="md:col-span-4 space-y-2 text-left">
+          <p className="text-xs font-mono font-bold uppercase text-white">Calculators & Guides</p>
           <ul className="space-y-2 text-xs font-mono text-editorial-muted">
-            <li><Link href="/#your-time" className="hover:text-white transition-colors">Your Time</Link></li>
-            <li><Link href="/#timeline" className="hover:text-white transition-colors">Timeline</Link></li>
-            <li><Link href="/#how-it-works" className="hover:text-white transition-colors">How It Works</Link></li>
-            <li><Link href="/calculator" className="hover:text-white transition-colors">Calculator</Link></li>
+            <li><Link href="/instagram-time-calculator" className="hover:text-accent-coral transition-colors">Instagram Time Calculator</Link></li>
+            <li><Link href="/reels-time-calculator" className="hover:text-accent-coral transition-colors">Reels Time Calculator</Link></li>
+            <li><Link href="/screen-time-calculator" className="hover:text-accent-coral transition-colors">Screen Time Calculator</Link></li>
+            <li><Link href="/how-to-check-instagram-time" className="hover:text-accent-coral transition-colors">How to Check IG Time</Link></li>
+            <li><Link href="/how-instagram-time-is-calculated" className="hover:text-accent-coral transition-colors">Calculation Methodology</Link></li>
           </ul>
         </motion.div>
 
-        {/* Data Privacy & Calculations Note */}
+        {/* Data Privacy & Transparency */}
         <motion.div variants={itemVariants} className="md:col-span-4 space-y-2 text-left">
           <p className="text-xs font-mono font-bold uppercase text-white flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-accent-emerald" />
-            Data Transparency
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
+            Data Privacy & Local Processing
           </p>
           <p className="text-xs text-editorial-muted leading-relaxed">
-            All calculations run 100% client-side in your browser. No personal data tracking or user account login required.
+            All calculations run 100% client-side in your browser. No Instagram login, credentials, or private data storage required.
           </p>
         </motion.div>
 
       </motion.div>
 
-      {/* Bottom Bar — Small Copyright & Metadata */}
+      {/* Bottom Bar — Copyright & Sitemap Link */}
       <div className="border-t border-editorial-border py-6 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] font-mono text-editorial-dim">
           <p>© {new Date().getFullYear()} ScrollBack. Handcrafted for attention clarity.</p>
-          <p>Time Engine v2.0 // Client-Side Audit</p>
+          <div className="flex items-center gap-4">
+            <Link href="/sitemap.xml" className="hover:text-white transition-colors">Sitemap</Link>
+            <span>•</span>
+            <Link href="/how-instagram-time-is-calculated" className="hover:text-white transition-colors">Privacy & Methodology</Link>
+          </div>
         </div>
       </div>
 

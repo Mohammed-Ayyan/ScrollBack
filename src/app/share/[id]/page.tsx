@@ -23,6 +23,10 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
   return {
     title: `ScrollBack Report — ${Number(report.totalDaysLost || 0).toFixed(0)} Days Spent Watching Reels`,
     description: `A user spent approximately ${Number(report.totalDaysLost || 0).toFixed(0)} days watching short vertical videos. Calculate your scroll cost on ScrollBack.`,
+    robots: {
+      index: false,
+      follow: true,
+    },
   };
 }
 

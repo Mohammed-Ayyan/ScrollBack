@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion, useScroll, useTransform, useReducedMotion } from 'framer-motion';
 import { ArrowRight, Clock, ChevronDown, Compass, AlertCircle, Sparkles } from 'lucide-react';
 import { InteractiveReelFeed } from './InteractiveReelFeed';
-import { TextReveal } from '@/components/ui/TextReveal';
 
 export const Hero: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -30,7 +29,7 @@ export const Hero: React.FC = () => {
   const visualOpacity = useTransform(scrollYProgress, [0, 0.8], [1, 0.4]);
 
   return (
-    <section ref={containerRef} className="relative border-b border-editorial-border py-16 lg:py-24 overflow-hidden time-grid-bg">
+    <section ref={containerRef} aria-label="Hero Introduction" className="relative border-b border-editorial-border py-16 lg:py-24 overflow-hidden time-grid-bg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Top Ticking Time Notice */}
@@ -65,32 +64,29 @@ export const Hero: React.FC = () => {
               className="inline-flex items-center gap-2 px-3 py-1 bg-surface-100 border border-editorial-border text-xs font-mono text-accent-coral uppercase tracking-wider"
             >
               <Sparkles className="w-3.5 h-3.5" />
-              <span>Interactive Time Audit Engine</span>
+              <span>Instagram Time & Screen Time Calculator</span>
             </motion.div>
 
-            {/* Headline */}
-            <div className="space-y-2">
-              <TextReveal
-                text="Where did your actual"
-                as="h1"
-                className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.05]"
-              />
-              <TextReveal
-                text="time disappear?"
-                as="h1"
-                delay={0.2}
-                className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-accent-coral leading-[1.05]"
-              />
-            </div>
+            {/* SINGLE H1 HEADLINE */}
+            <motion.div
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="space-y-1"
+            >
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.05]">
+                How much of your life went into <span className="text-accent-coral">scrolling?</span>
+              </h1>
+            </motion.div>
 
-            {/* Subtext */}
+            {/* Subtext with natural SEO intent */}
             <motion.p
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-lg sm:text-xl text-editorial-muted max-w-xl font-normal leading-relaxed"
             >
-              Short videos consume your days in 15-second slices. Audit your life timeline and see the scale of what was given away.
+              Calculate your cumulative Instagram screen time, total hours lost, estimated Reels watched, and what that time could become using the average daily time reported by your account.
             </motion.p>
 
             {/* CTAs */}
@@ -105,15 +101,15 @@ export const Hero: React.FC = () => {
                 className="inline-flex items-center justify-center gap-3 px-8 py-4 bg-accent-coral text-background font-bold text-sm uppercase tracking-wider hover:bg-white transition-all shadow-[0_0_30px_rgba(255,77,77,0.3)] group"
               >
                 <Compass className="w-4 h-4" />
-                <span>Enter Personal Time Machine</span>
+                <span>Calculate Your Instagram Time</span>
                 <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </Link>
 
               <Link
-                href="#time-stages"
+                href="#time-calculator-explained"
                 className="inline-flex items-center justify-center gap-2 px-6 py-4 border border-editorial-border bg-surface-50 hover:bg-surface-100 text-editorial-cream font-medium text-sm transition-colors"
               >
-                <span>Explore the Time Stages</span>
+                <span>How It Works</span>
                 <ChevronDown className="w-4 h-4 text-editorial-dim" />
               </Link>
             </motion.div>
@@ -126,16 +122,16 @@ export const Hero: React.FC = () => {
               className="pt-8 border-t border-editorial-border grid grid-cols-3 gap-6 max-w-lg"
             >
               <div>
-                <p className="text-xs font-mono text-editorial-dim uppercase">Slice Unit</p>
-                <p className="text-lg font-bold text-white font-mono">15 Seconds</p>
+                <p className="text-xs font-mono text-editorial-dim uppercase">Input Source</p>
+                <p className="text-lg font-bold text-white font-mono">IG App Average</p>
               </div>
               <div>
-                <p className="text-xs font-mono text-editorial-dim uppercase">Daily Average</p>
-                <p className="text-lg font-bold text-white font-mono">2.5 Hours</p>
+                <p className="text-xs font-mono text-editorial-dim uppercase">Daily Baseline</p>
+                <p className="text-lg font-bold text-white font-mono">2h 34m Avg</p>
               </div>
               <div>
-                <p className="text-xs font-mono text-editorial-dim uppercase">Decade Cost</p>
-                <p className="text-lg font-bold text-accent-coral font-mono">~38 Waking Days/Yr</p>
+                <p className="text-xs font-mono text-editorial-dim uppercase">Yearly Impact</p>
+                <p className="text-lg font-bold text-accent-coral font-mono">~39 Full Days/Yr</p>
               </div>
             </motion.div>
 
