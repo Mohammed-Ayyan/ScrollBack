@@ -166,7 +166,7 @@ export const Clock24hDial: React.FC<Clock24hDialProps> = ({ hours, minutes }) =>
 
             <div className="p-2.5 bg-accent-coral/10 border border-accent-coral/40 flex items-center justify-between col-span-2">
               <span className="text-accent-coral font-bold flex items-center gap-1.5">
-                <Flame className="w-3.5 h-3.5 text-accent-coral" /> Social Video Scrolling
+                <Flame className="w-3.5 h-3.5 text-accent-coral" /> Daily Instagram Baseline Time
               </span>
               <span className="font-bold text-accent-coral">{hours}h {minutes}m ({wakingScrollPercent}% of waking day)</span>
             </div>

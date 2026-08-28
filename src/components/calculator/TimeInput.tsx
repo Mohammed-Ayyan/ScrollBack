@@ -23,8 +23,8 @@ export const TimeInput: React.FC<TimeInputProps> = ({
           <Clock className="w-5 h-5 text-brand-rose" />
         </div>
         <div>
-          <h3 className="text-xl font-bold text-white">Daily Reels & Short Video Time</h3>
-          <p className="text-xs text-zinc-400">Estimate your average daily watching duration</p>
+          <h3 className="text-xl font-bold text-white">Daily Instagram Average Time</h3>
+          <p className="text-xs text-zinc-400">Enter the daily average reported by your Instagram account</p>
         </div>
       </div>
 
